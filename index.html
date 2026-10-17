@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#F1F5F1">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>ひだまりノート 西浦和店</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@600&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>
+/* Layout: mobile-first single column, sticky header + fixed bottom tabs; sunlit greeting panel is the one bold moment */
+:root{
+  --bg:#F1F5F1; --surface:#FFFFFF; --surface-2:#E7EFE9; --ink:#2E3A34; --ink-soft:#65736B; --line:#D6E1D9;
+  --sage:#4C8769; --sage-ink:#FFFFFF; --sage-soft:#DCEBE2;
+  --sun:#E5AE45; --sun-soft:#FBF0D6; --blush:#CF7F70; --blush-soft:#F8E4DF;
+  --t-notice:#EE8A1E; --t-handover:#2E9BD6; --t-phone:#8B6FE0; --t-verbal:#E8679C; --t-tips:#20A97A; --t-issue:#E9573F; --on-c:#FFFFFF;
+  --shadow:0 1px 2px rgba(46,58,52,.05),0 8px 24px rgba(46,58,52,.06);
+  --veil:rgba(30,40,35,.38);
+  --f-display:"Klee One","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  --f-body:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141A17; --surface:#1D2521; --surface-2:#25302A; --ink:#E4EBE6; --ink-soft:#9BA8A0; --line:#2E3A33;
+  --sage:#7DBB9B; --sage-ink:#0F2219; --sage-soft:#22382C;
+  --sun:#E8C06C; --sun-soft:#352D1C; --blush:#E39C8E; --blush-soft:#3A2622;
+  --t-notice:#FFB35C; --t-handover:#6CC4F2; --t-phone:#B7A3FF; --t-verbal:#FF9CC4; --t-tips:#5FD6A8; --t-issue:#FF8C78; --on-c:#14171A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); --veil:rgba(0,0,0,.55); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141A17; --surface:#1D2521; --surface-2:#25302A; --ink:#E4EBE6; --ink-soft:#9BA8A0; --line:#2E3A33;
+  --sage:#7DBB9B; --sage-ink:#0F2219; --sage-soft:#22382C;
+  --sun:#E8C06C; --sun-soft:#352D1C; --blush:#E39C8E; --blush-soft:#3A2622;
+  --t-notice:#FFB35C; --t-handover:#6CC4F2; --t-phone:#B7A3FF; --t-verbal:#FF9CC4; --t-tips:#5FD6A8; --t-issue:#FF8C78; --on-c:#14171A;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); --veil:rgba(0,0,0,.55); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+a{color:var(--sage)}
+
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px}
+.brand{display:flex;flex-direction:column;line-height:1.2;min-width:0;flex:1}
+.brand b{font-family:var(--f-display);font-size:20px;font-weight:600;letter-spacing:.02em}
+.brand small{font-size:11px;color:var(--ink-soft);letter-spacing:.08em}
+.me{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px 4px 4px;font-size:13px}
+.avatar{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--sage-soft);color:var(--sage);font-weight:700;font-size:13px;flex:none}
+.role{font-size:10px;padding:1px 6px;border-radius:6px;background:var(--sun-soft);color:var(--ink)}
+
+.demo{background:var(--sun-soft);font-size:12px;color:var(--ink)}
+.demo .wrap{padding-block:6px}
+
+main{padding-block:16px 140px}
+.view{display:flex;flex-direction:column;gap:18px}
+h2.sec{font-family:var(--f-display);font-weight:600;font-size:18px;margin:0;display:flex;align-items:baseline;gap:8px}
+h2.sec small{font-family:var(--f-body);font-size:12px;color:var(--ink-soft);font-weight:400}
+.muted{color:var(--ink-soft)}
+
+/* sunlit greeting */
+.sunny{position:relative;overflow:hidden;border-radius:22px;padding:22px 20px;background:
+  radial-gradient(120% 90% at 92% -10%,color-mix(in srgb,var(--sun) 55%,transparent) 0%,transparent 55%),
+  radial-gradient(80% 70% at -10% 120%,color-mix(in srgb,var(--sage) 28%,transparent) 0%,transparent 60%),
+  var(--surface);border:1px solid var(--line)}
+.sunny .date{font-size:12px;color:var(--ink-soft);letter-spacing:.06em}
+.sunny h1{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,5.5vw,28px);margin:2px 0 10px;line-height:1.35;text-wrap:balance}
+.sunny p{margin:0;font-size:14px}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.stat{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px}
+.stat b{font-size:17px;font-variant-numeric:tabular-nums}
+.stat.warn b{color:var(--blush)}
+.stat.ok b{color:var(--sage)}
+
+/* list items */
+.list{display:flex;flex-direction:column;gap:10px}
+.item{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:start;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;transition:transform .15s ease,box-shadow .15s ease}
+.item:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.item.unread{border-color:color-mix(in srgb,var(--sun) 65%,var(--line))}
+.item .body{min-width:0}
+.item .title{font-weight:700;font-size:15px;line-height:1.5;margin:4px 0 2px;overflow-wrap:anywhere}
+.item .snip{font-size:13px;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.item .meta{font-size:12px;color:var(--ink-soft);margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 10px}
+.item .side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--ink-soft)}
+.tag i{width:9px;height:9px;border-radius:50%;background:var(--c);display:inline-block}
+.badge{font-size:11px;padding:2px 9px;border-radius:999px;white-space:nowrap;font-weight:500}
+.badge.must{background:var(--blush-soft);color:var(--blush)}
+.badge.new{background:var(--sun-soft);color:var(--ink)}
+.badge.done{background:var(--sage-soft);color:var(--sage)}
+.badge.lock{background:var(--surface-2);color:var(--ink-soft)}
+.badge.s-open{background:var(--blush-soft);color:var(--blush)}
+.badge.s-progress{background:var(--sun-soft);color:var(--ink)}
+.badge.s-done{background:var(--sage-soft);color:var(--sage)}
+
+.empty{border:1.5px dashed var(--line);border-radius:var(--r);padding:22px;text-align:center;color:var(--ink-soft);font-size:14px}
+
+/* controls */
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 14px}
+.search input{border:0;background:transparent;flex:1;min-width:0;padding:10px 0;font-size:16px;outline:none}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft)}
+.switch input{width:18px;height:18px;accent-color:var(--sage)}
+
+.btn{border:0;border-radius:14px;padding:12px 18px;font-weight:700;font-size:15px;background:var(--sage);color:var(--sage-ink);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn.soft{background:var(--sage-soft);color:var(--sage)}
+.btn.danger{background:var(--blush-soft);color:var(--blush)}
+.btn.small{padding:7px 12px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.wide{width:100%}
+
+/* check board */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.prog{display:grid;gap:6px}
+.prog .head{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.prog .head b{min-width:0;overflow-wrap:anywhere}
+.prog .num{font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap;font-size:13px}
+.bar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar span{display:block;height:100%;border-radius:99px;background:var(--sage)}
+.names{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.nm{font-size:12px;border-radius:999px;padding:2px 10px;background:var(--sage-soft);color:var(--sage)}
+.nm.no{background:var(--surface-2);color:var(--ink-soft)}
+.tbl-wrap{overflow-x:auto}
+table.who{border-collapse:collapse;width:100%;font-size:14px}
+table.who td,table.who th{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}
+table.who th{font-size:12px;color:var(--ink-soft);font-weight:500}
+table.who td.n{text-align:right;font-variant-numeric:tabular-nums}
+.check-list{display:flex;flex-direction:column;gap:12px}
+details.prog summary{list-style:none;cursor:pointer}
+details.prog summary::-webkit-details-marker{display:none}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:12px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;border-radius:9px;padding:6px 12px;font-size:13px;color:var(--ink-soft)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);font-weight:500}
+
+/* bottom tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.tabs .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tab{border:0;background:transparent;padding:9px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--ink-soft);position:relative}
+.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-current="page"]{color:var(--sage);font-weight:700}
+.tab .dot{position:absolute;top:5px;left:calc(50% + 8px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--blush);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.fab{position:fixed;z-index:7;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(78px + env(safe-area-inset-bottom,0px));border:0;border-radius:999px;background:var(--sun);color:#2E2410;font-weight:700;font-size:15px;padding:14px 22px 14px 18px;box-shadow:0 8px 24px color-mix(in srgb,var(--sun) 45%,transparent);display:flex;align-items:center;gap:6px}
+.fab svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round}
+
+/* sheets */
+.veil{position:fixed;inset:0;z-index:20;background:var(--veil);display:flex;align-items:flex-end;justify-content:center;animation:fade .18s ease}
+.sheet{width:100%;max-width:640px;max-height:92%;overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:8px max(18px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));animation:up .22s ease}
+@media (min-width:700px){.veil{align-items:center}.sheet{border-radius:24px;max-height:88%}}
+.grip{width:40px;height:5px;border-radius:9px;background:var(--line);margin:6px auto 10px}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.sheet-head h3{margin:0;font-family:var(--f-display);font-weight:600;font-size:19px}
+.x{border:0;background:var(--surface-2);border-radius:50%;width:34px;height:34px;font-size:18px;line-height:1;color:var(--ink-soft)}
+#sheet.still .veil,#sheet.still .sheet{animation:none}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+.types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.type-btn{border:1.5px solid var(--line);background:var(--surface);border-radius:16px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px}
+.type-btn b{display:flex;align-items:center;gap:8px;font-size:15px}
+.type-btn b i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.type-btn span{font-size:12px;color:var(--ink-soft);line-height:1.5}
+.type-btn[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,var(--surface))}
+
+form.f{display:flex;flex-direction:column;gap:14px}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld label,.lbl{font-size:13px;font-weight:700}
+.fld .hint{font-size:12px;color:var(--ink-soft);font-weight:400}
+.fld input[type=text],.fld input[type=password],.fld textarea,.fld select{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 14px;font-size:16px}
+.fld textarea{min-height:140px;resize:vertical;line-height:1.7}
+.opt{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.opt input{width:20px;height:20px;accent-color:var(--blush);margin-top:2px;flex:none}
+.opt small{display:block;color:var(--ink-soft);font-size:12px}
+.vis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vis label{display:flex;flex-direction:column;gap:2px;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;font-size:14px;cursor:pointer}
+.vis label small{color:var(--ink-soft);font-size:12px}
+.vis input{position:absolute;opacity:0;pointer-events:none}
+.vis label:has(input:checked){border-color:var(--sage);background:var(--sage-soft)}
+
+/* detail */
+.d-title{font-size:20px;font-weight:700;line-height:1.5;margin:6px 0;overflow-wrap:anywhere}
+.d-meta{font-size:13px;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:4px 14px}
+.src{margin-top:10px;font-size:13px;background:var(--surface-2);border-radius:10px;padding:8px 12px}
+.d-body{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-top:12px;overflow-wrap:anywhere;font-size:15px}
+.readbox{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.read-btn{border:0;border-radius:16px;padding:16px;font-size:16px;font-weight:700;background:var(--sun);color:#2E2410;width:100%}
+.read-done{border-radius:16px;padding:14px;text-align:center;background:var(--sage-soft);color:var(--sage);font-weight:700}
+.blk{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.blk h4{margin:0;font-size:14px}
+.cmt{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:14px;overflow-wrap:anywhere}
+.cmt.mgr{border-color:color-mix(in srgb,var(--sage) 50%,var(--line));background:color-mix(in srgb,var(--sage-soft) 60%,var(--surface))}
+.cmt .who{font-size:12px;color:var(--ink-soft);margin-bottom:2px}
+.cmt-form{display:flex;gap:8px;align-items:flex-end}
+.cmt-form textarea{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;font-size:16px;min-height:46px;resize:vertical}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+
+/* login */
+.login{position:fixed;inset:0;z-index:30;overflow:auto;background:
+  radial-gradient(90% 60% at 85% 0%,color-mix(in srgb,var(--sun) 45%,transparent),transparent 60%),
+  radial-gradient(80% 60% at 0% 100%,color-mix(in srgb,var(--sage) 30%,transparent),transparent 60%),var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
+.login .card{width:100%;max-width:400px;padding:26px 22px;box-shadow:var(--shadow)}
+.login h1{font-family:var(--f-display);font-weight:600;font-size:28px;margin:0;line-height:1.3}
+.login .lead{margin:6px 0 18px;font-size:13px;color:var(--ink-soft)}
+.err{color:var(--blush);font-size:13px;min-height:1em}
+.pin{letter-spacing:.5em;font-variant-numeric:tabular-nums}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:40;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14px;box-shadow:var(--shadow);animation:fade .2s ease;max-width:calc(100% - 32px)}
+.loading{display:flex;justify-content:center;padding:40px;color:var(--ink-soft)}
+
+/* ===== カラフル ===== */
+body{background:
+  radial-gradient(34rem 26rem at 105% -5%,color-mix(in srgb,var(--t-notice) 16%,transparent),transparent 70%),
+  radial-gradient(30rem 26rem at -10% 28%,color-mix(in srgb,var(--t-handover) 13%,transparent),transparent 70%),
+  radial-gradient(30rem 26rem at 110% 62%,color-mix(in srgb,var(--t-verbal) 12%,transparent),transparent 70%),
+  radial-gradient(32rem 26rem at -10% 100%,color-mix(in srgb,var(--t-tips) 14%,transparent),transparent 70%),
+  var(--bg);background-attachment:fixed}
+.brand b{background:linear-gradient(90deg,var(--t-notice),var(--t-verbal) 40%,var(--t-phone) 70%,var(--t-handover));-webkit-background-clip:text;background-clip:text;color:transparent}
+.avatar{background:color-mix(in srgb,var(--c,var(--sage)) 22%,var(--surface));color:color-mix(in srgb,var(--c,var(--sage)) 80%,var(--ink))}
+.sunny{border:0;background:
+  radial-gradient(70% 90% at 100% 0%,color-mix(in srgb,var(--t-notice) 42%,transparent),transparent 62%),
+  radial-gradient(60% 80% at 0% 0%,color-mix(in srgb,var(--t-verbal) 30%,transparent),transparent 60%),
+  radial-gradient(70% 90% at 0% 100%,color-mix(in srgb,var(--t-handover) 30%,transparent),transparent 62%),
+  radial-gradient(60% 90% at 100% 100%,color-mix(in srgb,var(--t-tips) 30%,transparent),transparent 62%),
+  var(--surface)}
+.stat{border-color:color-mix(in srgb,var(--c,var(--line)) 35%,var(--line));background:color-mix(in srgb,var(--c,var(--surface)) 12%,var(--surface))}
+.stat b,.stat.warn b,.stat.ok b{color:color-mix(in srgb,var(--c,var(--ink)) 85%,var(--ink))}
+h2.sec::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c,var(--t-notice));align-self:center;flex:none}
+.item{background:color-mix(in srgb,var(--c) 7%,var(--surface));border-color:color-mix(in srgb,var(--c) 30%,var(--line))}
+.item.unread{border-color:color-mix(in srgb,var(--c) 70%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 14%,transparent)}
+.item:hover{box-shadow:0 8px 22px color-mix(in srgb,var(--c) 22%,transparent)}
+.tag{background:color-mix(in srgb,var(--c) 18%,var(--surface));color:color-mix(in srgb,var(--c) 70%,var(--ink));padding:1px 10px 1px 8px;border-radius:999px;font-weight:700}
+.tag i{background:var(--c)}
+.chip{background:color-mix(in srgb,var(--c,var(--ink)) 9%,var(--surface));border-color:color-mix(in srgb,var(--c,var(--ink)) 30%,var(--line))}
+.chip[aria-pressed="true"]{background:var(--c,var(--ink));color:var(--on-c);border-color:var(--c,var(--ink))}
+.chip[aria-pressed="true"]:not([style]){color:var(--bg)}
+.chip[aria-pressed="true"] i{background:var(--on-c)}
+.seg{background:color-mix(in srgb,var(--c,var(--t-phone)) 12%,var(--surface-2))}
+.seg button[aria-pressed="true"]{color:color-mix(in srgb,var(--c,var(--t-phone)) 75%,var(--ink));font-weight:700}
+.bar{background:color-mix(in srgb,var(--c,var(--sage)) 14%,var(--surface-2))}
+.bar span{background:linear-gradient(90deg,color-mix(in srgb,var(--c,var(--sage)) 70%,var(--surface)),var(--c,var(--sage)))}
+details.prog.card{border-color:color-mix(in srgb,var(--c,var(--line)) 30%,var(--line))}
+.tab{--tc:var(--ink-soft)}
+.tab svg{padding:2px 12px;width:46px;height:28px;border-radius:999px;transition:background .15s}
+.tab[aria-current="page"]{color:var(--c)}
+.tab[aria-current="page"] svg{background:color-mix(in srgb,var(--c) 18%,transparent)}
+.fab{background:linear-gradient(135deg,var(--t-notice),var(--t-verbal));color:var(--on-c);box-shadow:0 10px 26px color-mix(in srgb,var(--t-verbal) 40%,transparent)}
+.type-btn{background:color-mix(in srgb,var(--c) 8%,var(--surface));border-color:color-mix(in srgb,var(--c) 30%,var(--line))}
+.type-btn b{color:color-mix(in srgb,var(--c) 75%,var(--ink))}
+.type-btn[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 20%,var(--surface));border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 18%,transparent)}
+.sheet{background:linear-gradient(180deg,color-mix(in srgb,var(--c,var(--t-notice)) 12%,var(--bg)) 0,var(--bg) 220px)}
+.d-body{border-color:color-mix(in srgb,var(--c,var(--line)) 35%,var(--line))}
+.read-btn{background:linear-gradient(135deg,var(--t-notice),var(--t-verbal));color:var(--on-c)}
+.nm{background:color-mix(in srgb,var(--t-tips) 16%,var(--surface));color:color-mix(in srgb,var(--t-tips) 75%,var(--ink))}
+.btn{background:var(--t-tips);color:var(--on-c)}
+.btn.ghost{background:var(--surface);color:var(--ink)}
+.btn.danger{background:var(--blush-soft);color:var(--blush)}
+.demo{background:linear-gradient(90deg,color-mix(in srgb,var(--t-notice) 18%,var(--surface)),color-mix(in srgb,var(--t-verbal) 16%,var(--surface)))}
+.login h1{background:linear-gradient(90deg,var(--t-notice),var(--t-verbal),var(--t-phone),var(--t-handover));-webkit-background-clip:text;background-clip:text;color:transparent}
+.login{background:
+  radial-gradient(60% 45% at 100% 0%,color-mix(in srgb,var(--t-notice) 35%,transparent),transparent 65%),
+  radial-gradient(55% 45% at 0% 10%,color-mix(in srgb,var(--t-verbal) 25%,transparent),transparent 65%),
+  radial-gradient(60% 45% at 0% 100%,color-mix(in srgb,var(--t-handover) 28%,transparent),transparent 65%),
+  radial-gradient(55% 45% at 100% 100%,color-mix(in srgb,var(--t-tips) 28%,transparent),transparent 65%),var(--bg)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div id="login" class="login" hidden>
+  <div class="card">
+    <h1>ひだまりノート</h1>
+    <p class="lead" id="loginStore">フィットイージー 西浦和店 スタッフ専用</p>
+    <form class="f" id="loginForm">
+      <div class="fld">
+        <label for="loginName">お名前</label>
+        <select id="loginName" required></select>
+      </div>
+      <div class="fld">
+        <label for="loginPin">PIN（4桁）</label>
+        <input id="loginPin" class="pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="8" required>
+      </div>
+      <div class="err" id="loginErr"></div>
+      <button class="btn wide" type="submit" id="loginBtn">はじめる</button>
+      <p class="muted" id="demoHint" style="font-size:12px;margin:0" hidden>お試しモードのPIN … 店長：0000 ／ スタッフ：1111</p>
+    </form>
+  </div>
+</div>
+
+<div id="app" hidden>
+  <header class="top">
+    <div class="wrap">
+      <div class="brand"><b>ひだまりノート</b><small id="storeName">フィットイージー 西浦和店</small></div>
+      <button class="me" data-act="account" id="meChip" aria-label="アカウント"></button>
+    </div>
+  </header>
+  <div class="demo" id="demoBar" hidden><div class="wrap">お試しモードで動いています。ここで書いた内容はこの端末にだけ保存されます。</div></div>
+  <main class="wrap"><div id="view" class="view"></div></main>
+
+  <button class="fab" data-act="compose"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>書く</button>
+
+  <nav class="tabs" aria-label="メニュー"><div class="in">
+    <button class="tab" data-act="nav" data-v="home" style="--c:var(--t-notice)"><svg viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z"/></svg>ホーム<span class="dot" id="dotHome" hidden></span></button>
+    <button class="tab" data-act="nav" data-v="board" style="--c:var(--t-handover)"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>ノート</button>
+    <button class="tab" data-act="nav" data-v="issues" style="--c:var(--t-issue)"><svg viewBox="0 0 24 24"><path d="M5 5h14v10H9l-4 4z"/><path d="M12 8v3M12 13.5v.01"/></svg>相談箱<span class="dot" id="dotIssue" hidden></span></button>
+    <button class="tab" data-act="nav" data-v="check" style="--c:var(--t-tips)"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/><path d="M5 19h14"/></svg>確認状況</button>
+  </div></nav>
+</div>
+
+<div id="sheet"></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+/* ======================================================
+   ★ 設定（ここだけ書き換えればOK）
+   API_URL … Apps Script を「ウェブアプリ」として公開したURL。
+             空のままだと「お試しモード」（端末内だけで動く）になります。
+   ====================================================== */
+const CONFIG = {
+  API_URL: "",
+  STORE: "フィットイージー 西浦和店",
+  REFRESH_SEC: 60
+};
+
+/* ---------- 基本 ---------- */
+const TYPES = {
+  notice:   {label:"告知",     desc:"店長・スタッフからのお知らせ", c:"var(--t-notice)",   must:true},
+  handover: {label:"引継ぎ",   desc:"次のシフトへ伝えること",       c:"var(--t-handover)", must:true},
+  phone:    {label:"電話メモ", desc:"電話で聞いた内容・対応",       c:"var(--t-phone)",    src:"電話の相手", srcPh:"例：会員 ○○様 / 本部 ○○さん"},
+  verbal:   {label:"口頭メモ", desc:"口頭で説明を受けた内容",       c:"var(--t-verbal)",   src:"誰から聞いた？", srcPh:"例：○○店長から"},
+  tips:     {label:"ノウハウ", desc:"マニュアルにない対応・解決法", c:"var(--t-tips)"},
+  issue:    {label:"相談",     desc:"店長に解決してほしいこと",     c:"var(--t-issue)"}
+};
+const STATUS = {open:"受付", progress:"対応中", done:"解決済み"};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtBody = s => esc(s).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>').replace(/\n/g,"<br>");
+const LS = {
+  get(k,d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const WD = "日月火水木金土";
+function ago(iso){
+  const d = new Date(iso), now = new Date(), s = (now - d) / 1000;
+  if (s < 60) return "たった今";
+  if (s < 3600) return Math.floor(s/60) + "分前";
+  const hm = d.getHours() + ":" + String(d.getMinutes()).padStart(2,"0");
+  if (d.toDateString() === now.toDateString()) return "今日 " + hm;
+  const y = new Date(now); y.setDate(now.getDate()-1);
+  if (d.toDateString() === y.toDateString()) return "昨日 " + hm;
+  return (d.getMonth()+1) + "/" + d.getDate() + "(" + WD[d.getDay()] + ") " + hm;
+}
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(()=> t.hidden = true, 2200); }
+
+/* ---------- お試しモード（端末内に保存） ---------- */
+const Demo = (() => {
+  const KEY = "hidamari-demo-v1"; let db = null;
+  const uid = () => Math.random().toString(36).slice(2,10);
+  const hrs = h => new Date(Date.now() - h*3600e3).toISOString();
+  function seed(){
+    const staff = [
+      {name:"山本 店長", pin:"0000", role:"manager"},
+      {name:"佐藤", pin:"1111", role:"staff"}, {name:"鈴木", pin:"1111", role:"staff"},
+      {name:"高橋", pin:"1111", role:"staff"}, {name:"田中", pin:"1111", role:"staff"},
+      {name:"伊藤", pin:"1111", role:"staff"}
+    ];
+    const P = (id,h,author,type,title,body,o={}) => ({id,createdAt:hrs(h),author,type,title,body,source:o.source||"",important:!!o.important,visibility:o.visibility||"public",status:o.status||(type==="issue"?"open":""),deleted:false});
+    const posts = [
+      P("p1",3,"山本 店長","notice","【例】11月から清掃チェック表が新しくなります","11/1から、ロッカールームの清掃チェック表を新しい様式に変えます。\n・チェック欄が「朝・昼・夜」の3つになります\n・終わったら時間とサインを記入\n\n古い用紙は10/31で回収します。わからない点はコメントで聞いてください。",{important:true}),
+      P("p2",5,"鈴木","handover","【例】サウナ室の温度表示がときどき消えます","14時ごろから温度表示が消えたりついたりしています。業者さんには連絡済みで、来週火曜に点検予定です。\n会員さんに聞かれたら「点検予定です、温度は正常です」と案内してください。",{important:true}),
+      P("p3",26,"佐藤","phone","【例】休会手続きの問い合わせを受けたとき","会員様から電話で休会の締め切り日を聞かれました。\n→ 締め切り日は店舗の案内資料で確認してから答える。その場で分からないときは「確認して折り返します」と伝えて、名前と電話番号を控える。\n折り返しは店長かリーダーが対応。",{source:"会員 大川様（電話）"}),
+      P("p4",30,"高橋","verbal","【例】入館エラーが出たときの最初の対応","山本店長から教わった手順です。\n1. まず会員さんの名前とエラー表示を確認\n2. 端末を一度再起動（1分ほど）\n3. それでもダメなら店長へ連絡。会員さんには事務所で少し待ってもらう",{source:"山本 店長から口頭で"}),
+      P("p5",52,"田中","tips","【例】シャワー室の排水が流れにくいとき","排水口のフタの下に髪の毛がたまっていることが多いです。ゴム手袋をして取り除けばほとんど直ります。\n直らない場合は引継ぎに書いて、店長に報告。"),
+      P("p6",8,"佐藤","issue","【例】夜の見回りルートを見直したいです","22時以降の見回りで、奥のストレッチエリアを通らないルートになっています。死角になりやすいので、ルートに入れたほうがいいと思います。",{status:"progress"}),
+      P("p7",20,"鈴木","issue","【例】シフトについて相談したいです","来月の後半、家の事情で夜のシフトに入りにくくなりそうです。一度お話しできる時間をください。",{visibility:"private"})
+    ];
+    const R = (postId,name,h) => ({postId,name,readAt:hrs(h)});
+    const reads = [
+      R("p1","山本 店長",3),R("p1","鈴木",2),R("p1","高橋",1),
+      R("p2","鈴木",5),R("p2","山本 店長",4),R("p2","田中",3),R("p2","伊藤",2),
+      R("p3","佐藤",26),R("p3","山本 店長",25),R("p3","高橋",20),R("p3","田中",19),R("p3","伊藤",10),
+      R("p4","高橋",30),R("p4","山本 店長",28),R("p4","佐藤",24),
+      R("p5","田中",52),R("p5","山本 店長",40),R("p5","佐藤",30),R("p5","鈴木",29),R("p5","高橋",28),R("p5","伊藤",20),
+      R("p6","佐藤",8),R("p6","山本 店長",6),R("p7","鈴木",20),R("p7","山本 店長",18)
+    ];
+    const comments = [
+      {id:"c1",postId:"p6",author:"山本 店長",body:"ありがとう、確かにそうですね。来週のミーティングで新しいルートを決めます。",createdAt:hrs(6)},
+      {id:"c2",postId:"p1",author:"高橋",body:"新しい用紙はどこに置いてありますか？",createdAt:hrs(1.5)},
+      {id:"c3",postId:"p1",author:"山本 店長",body:"事務所の棚の一番上、青いファイルに入れてあります。",createdAt:hrs(1)}
+    ];
+    return {staff,posts,reads,comments};
+  }
+  const load = () => LS.get(KEY, null) || seed();
+  const save = () => LS.set(KEY, db);
+  function auth(a){
+    const s = db.staff.find(x => a && x.name === a.name && String(x.pin) === String(a.pin));
+    if (!s) throw new Error("お名前かPINが違います");
+    return s;
+  }
+  const canSee = (p,me) => !p.deleted && !(p.type==="issue" && p.visibility==="private" && p.author!==me.name && me.role!=="manager");
+  async function call(action, q){
+    db = db || load();
+    await new Promise(r => setTimeout(r, 120));
+    let out;
+    switch(action){
+      case "staff": out = db.staff.map(({name,role}) => ({name,role})); break;
+      case "login": { const s = auth(q.auth); out = {name:s.name, role:s.role}; break; }
+      case "load": {
+        const me = auth(q.auth);
+        const posts = db.posts.filter(p => canSee(p,me)); const ids = new Set(posts.map(p => p.id));
+        out = {posts, reads:db.reads.filter(r => ids.has(r.postId)), comments:db.comments.filter(c => ids.has(c.postId)),
+               staff:db.staff.map(({name,role}) => ({name,role}))};
+        break;
+      }
+      case "create": {
+        const me = auth(q.auth), p = q.post;
+        if (!p.title || !p.body) throw new Error("タイトルと内容を入れてください");
+        const np = {id:uid(), createdAt:new Date().toISOString(), author:me.name, type:p.type, title:p.title, body:p.body,
+          source:p.source||"", important:!!p.important, visibility:p.type==="issue" ? (p.visibility||"public") : "public",
+          status:p.type==="issue" ? "open" : "", deleted:false};
+        db.posts.push(np); db.reads.push({postId:np.id, name:me.name, readAt:np.createdAt}); save(); out = np; break;
+      }
+      case "read": {
+        const me = auth(q.auth);
+        if (!db.reads.some(r => r.postId===q.id && r.name===me.name)) db.reads.push({postId:q.id, name:me.name, readAt:new Date().toISOString()});
+        save(); out = true; break;
+      }
+      case "comment": {
+        const me = auth(q.auth); if (!q.body) throw new Error("コメントを入れてください");
+        const c = {id:uid(), postId:q.id, author:me.name, body:q.body, createdAt:new Date().toISOString()};
+        db.comments.push(c); save(); out = c; break;
+      }
+      case "status": {
+        const me = auth(q.auth); if (me.role !== "manager") throw new Error("状況の変更は店長だけができます");
+        const p = db.posts.find(x => x.id===q.id); if (p) p.status = q.status; save(); out = true; break;
+      }
+      case "delete": {
+        const me = auth(q.auth); const p = db.posts.find(x => x.id===q.id);
+        if (!p) throw new Error("見つかりません");
+        if (p.author !== me.name && me.role !== "manager") throw new Error("削除できるのは書いた人と店長だけです");
+        p.deleted = true; save(); out = true; break;
+      }
+      default: throw new Error("unknown action");
+    }
+    return JSON.parse(JSON.stringify(out));
+  }
+  return {call, reset(){ LS.del(KEY); db = null; }};
+})();
+
+/* ---------- 通信 ---------- */
+async function api(action, payload = {}){
+  const body = {action, ...payload, auth:S.auth};
+  if (!CONFIG.API_URL) return Demo.call(action, body);
+  const res = await fetch(CONFIG.API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(body)});
+  const j = await res.json();
+  if (!j.ok) throw new Error(j.error || "通信がうまくいきませんでした");
+  return j.data;
+}
+
+/* ---------- 状態 ---------- */
+const S = {
+  auth: LS.get("hidamari-auth", null), me: null,
+  staff: [], posts: [], reads: [], comments: [],
+  view: "home", type: "all", q: "", unreadOnly: false, issueF: "all", checkMode: "must",
+  open: null, confirmDel: false, compose: null, busy: false
+};
+const isMgr = () => S.me && S.me.role === "manager";
+const readsOf = id => S.reads.filter(r => r.postId === id);
+const didRead = id => S.reads.some(r => r.postId === id && r.name === S.me.name);
+const commentsOf = id => S.comments.filter(c => c.postId === id).sort((a,b) => a.createdAt.localeCompare(b.createdAt));
+const sorted = () => [...S.posts].sort((a,b) => b.createdAt.localeCompare(a.createdAt));
+const needsMe = p => !didRead(p.id) && !(p.type==="issue" && p.visibility==="private");
+const mustList = () => sorted().filter(p => p.important && needsMe(p));
+
+/* ---------- 表示部品 ---------- */
+function tag(type){ const t = TYPES[type] || TYPES.tips; return `<span class="tag" style="--c:${t.c}"><i></i>${t.label}</span>`; }
+function statusBadge(p){ return p.type==="issue" ? `<span class="badge s-${p.status||"open"}">${STATUS[p.status||"open"]}</span>` : ""; }
+function itemHTML(p){
+  const unread = !didRead(p.id);
+  const cc = commentsOf(p.id).length;
+  const side = [
+    p.type==="issue" ? statusBadge(p) : "",
+    p.important && unread ? `<span class="badge must">要確認</span>` : (unread ? `<span class="badge new">未読</span>` : `<span class="badge done">確認済</span>`),
+    p.visibility==="private" ? `<span class="badge lock">非公開</span>` : ""
+  ].join("");
+  return `<button class="item ${unread?"unread":""}" style="--c:${(TYPES[p.type]||TYPES.tips).c}" data-act="open" data-id="${p.id}">
+    <div class="body">${tag(p.type)}
+      <div class="title">${esc(p.title)}</div>
+      <div class="snip">${esc(p.body)}</div>
+      <div class="meta"><span>${esc(p.author)}</span><span>${ago(p.createdAt)}</span>${p.source?`<span>${esc(p.source)}</span>`:""}${cc?`<span>コメント ${cc}</span>`:""}</div>
+    </div>
+    <div class="side">${side}</div>
+  </button>`;
+}
+const listHTML = (arr, empty) => arr.length ? `<div class="list">${arr.map(itemHTML).join("")}</div>` : `<div class="empty">${empty}</div>`;
+
+/* ---------- 各画面 ---------- */
+function greet(){ const h = new Date().getHours(); return h < 10 ? "おはようございます" : h < 18 ? "こんにちは" : "おつかれさまです"; }
+function viewHome(){
+  const must = mustList();
+  const unreadAll = sorted().filter(needsMe);
+  const now = new Date();
+  const openIssues = S.posts.filter(p => p.type==="issue" && p.status!=="done");
+  const myIssues = S.posts.filter(p => p.type==="issue" && p.author===S.me.name && p.status!=="done");
+  const latest = sorted().filter(p => p.type!=="issue" || p.visibility!=="private").slice(0,6);
+  const lead = must.length
+    ? `確認してほしいお知らせが <b>${must.length}件</b> あります。読んだら「確認しました」を押してください。`
+    : `確認してほしいお知らせは全部チェック済みです。今日もよろしくお願いします。`;
+  return `
+  <section class="sunny">
+    <div class="date">${now.getMonth()+1}月${now.getDate()}日（${WD[now.getDay()]}）</div>
+    <h1>${greet()}、${esc(S.me.name)}さん</h1>
+    <p>${lead}</p>
+    <div class="pill-row">
+      <span class="stat" style="--c:var(--t-${must.length?"issue":"tips"})">要確認 <b>${must.length}</b></span>
+      <span class="stat" style="--c:var(--t-handover)">未読 <b>${unreadAll.length}</b></span>
+      ${isMgr() ? `<span class="stat" style="--c:var(--t-phone)">未解決の相談 <b>${openIssues.length}</b></span>`
+                : (myIssues.length ? `<span class="stat" style="--c:var(--t-phone)">あなたの相談 <b>${myIssues.length}</b></span>` : "")}
+    </div>
+  </section>
+  <section class="view" style="gap:10px">
+    <h2 class="sec" style="--c:var(--t-issue)">まず確認するもの <small>要確認・未読</small></h2>
+    ${listHTML(must, "確認待ちのお知らせはありません")}
+  </section>
+  <section class="view" style="gap:10px">
+    <h2 class="sec" style="--c:var(--t-handover)">新しいノート</h2>
+    ${listHTML(latest, "まだ投稿がありません。右下の「書く」から最初のノートを書いてみましょう")}
+  </section>`;
+}
+function viewBoard(){
+  const chips = [["all","すべて",""], ...Object.entries(TYPES).map(([k,t]) => [k,t.label,t.c])]
+    .map(([k,l,c]) => `<button class="chip" data-act="type" data-t="${k}" aria-pressed="${S.type===k}" ${c?`style="--c:${c}"`:""}>${c?"<i></i>":""}${l}</button>`).join("");
+  return `
+  <h2 class="sec" style="--c:var(--t-handover)">ノート <small>電話・口頭メモ、引継ぎ、告知、ノウハウ</small></h2>
+  <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input id="q" type="search" placeholder="困ったことを検索（例：休会、入館エラー）" value="${esc(S.q)}"></label>
+  <div class="chips">${chips}</div>
+  <div class="row"><label class="switch"><input type="checkbox" id="unreadOnly" ${S.unreadOnly?"checked":""}>未読だけ表示</label><span class="muted" id="boardCount" style="font-size:12px"></span></div>
+  <div id="boardList"></div>`;
+}
+function boardItems(){
+  const words = S.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  return sorted().filter(p => {
+    if (S.type !== "all" && p.type !== S.type) return false;
+    if (S.unreadOnly && didRead(p.id)) return false;
+    if (!words.length) return true;
+    const hay = [p.title,p.body,p.author,p.source,...commentsOf(p.id).map(c => c.body)].join(" ").toLowerCase();
+    return words.every(w => hay.includes(w));
+  });
+}
+function renderBoardList(){
+  const arr = boardItems();
+  $("#boardList").innerHTML = listHTML(arr, S.q ? "見つかりませんでした。解決したら、その方法を「ノウハウ」に書いておくと次の人が助かります" : "このなかにはまだノートがありません");
+  $("#boardCount").textContent = arr.length + "件";
+}
+function viewIssues(){
+  const segs = [["all","すべて"],["open","受付"],["progress","対応中"],["done","解決済み"]]
+    .map(([k,l]) => `<button data-act="issueF" data-f="${k}" aria-pressed="${S.issueF===k}">${l}</button>`).join("");
+  const arr = sorted().filter(p => p.type==="issue" && (S.issueF==="all" || (p.status||"open")===S.issueF));
+  return `
+  <h2 class="sec" style="--c:var(--t-issue)">相談箱 <small>店長に解決してほしいこと</small></h2>
+  <div class="card" style="font-size:14px;display:flex;flex-direction:column;gap:10px">
+    <div>困っていること、改善したいこと、気になったことを店長に届けます。<b>非公開</b>にすると、書いた人と店長だけが見られます。</div>
+    <div><button class="btn small" data-act="compose" data-t="issue">相談を書く</button></div>
+  </div>
+  <div class="seg" role="group" aria-label="状況で絞り込み">${segs}</div>
+  ${listHTML(arr, "この状況の相談はありません")}`;
+}
+function viewCheck(){
+  const staffNames = S.staff.map(s => s.name);
+  const pool = sorted().filter(p => !(p.type==="issue" && p.visibility==="private"));
+  const target = (S.checkMode==="must" ? pool.filter(p => p.important) : pool).slice(0,30);
+  const rows = target.map(p => {
+    const rs = readsOf(p.id).map(r => r.name);
+    const got = staffNames.filter(n => rs.includes(n)), miss = staffNames.filter(n => !rs.includes(n));
+    const pct = staffNames.length ? Math.round(got.length / staffNames.length * 100) : 0;
+    return `<details class="prog card" style="--c:${(TYPES[p.type]||TYPES.tips).c}">
+      <summary><div class="prog">
+        <div>${tag(p.type)}</div><div class="head"><b>${esc(p.title)}</b><span class="num">${got.length}/${staffNames.length}人</span></div>
+        <div class="bar"><span style="width:${pct}%"></span></div>
+        <div class="muted" style="font-size:12px">${miss.length ? "まだの人：" + miss.map(esc).join("、") : "全員確認しました"}　・タップで詳しく</div>
+      </div></summary>
+      <div class="names" style="margin-top:10px">${got.map(n => `<span class="nm">✓ ${esc(n)}</span>`).join("")}${miss.map(n => `<span class="nm no">${esc(n)}</span>`).join("")}</div>
+      <div style="margin-top:10px"><button class="btn small ghost" data-act="open" data-id="${p.id}">内容を開く</button></div>
+    </details>`;
+  }).join("");
+  const mustAll = pool.filter(p => p.important);
+  const per = staffNames.map(n => ({n, c: mustAll.filter(p => !readsOf(p.id).some(r => r.name===n)).length}));
+  return `
+  <h2 class="sec" style="--c:var(--t-tips)">確認状況 <small>誰が読んだか</small></h2>
+  <div class="seg" role="group" aria-label="表示する範囲">
+    <button data-act="checkMode" data-m="must" aria-pressed="${S.checkMode==="must"}">要確認のみ</button>
+    <button data-act="checkMode" data-m="all" aria-pressed="${S.checkMode==="all"}">すべてのノート</button>
+  </div>
+  <div class="check-list">${rows || `<div class="empty">対象のノートはありません</div>`}</div>
+  <section class="card">
+    <h2 class="sec" style="font-size:16px;margin-bottom:6px;--c:var(--t-phone)">スタッフ別 まだ確認していない要確認</h2>
+    <div class="tbl-wrap"><table class="who"><thead><tr><th>名前</th><th style="text-align:right">未確認</th></tr></thead><tbody>
+      ${per.map(x => `<tr><td>${esc(x.n)}</td><td class="n">${x.c ? `<span class="badge must">${x.c}件</span>` : `<span class="badge done">0件</span>`}</td></tr>`).join("")}
+    </tbody></table></div>
+  </section>`;
+}
+
+/* ---------- 詳細・投稿シート ---------- */
+function sheetDetail(p){
+  if (!p) return "";
+  const rs = readsOf(p.id), rNames = rs.map(r => r.name);
+  const mine = rs.find(r => r.name === S.me.name);
+  const cs = commentsOf(p.id);
+  const mgrNames = S.staff.filter(s => s.role==="manager").map(s => s.name);
+  const staffNames = S.staff.map(s => s.name);
+  const canDel = p.author === S.me.name || isMgr();
+  const privateIssue = p.type==="issue" && p.visibility==="private";
+  const statusCtl = p.type==="issue" && isMgr() ? `<div class="blk"><h4>対応状況を変える</h4><div class="seg" role="group">${
+      Object.entries(STATUS).map(([k,l]) => `<button data-act="status" data-id="${p.id}" data-s="${k}" aria-pressed="${(p.status||"open")===k}">${l}</button>`).join("")}</div></div>` : "";
+  return `<div class="veil" data-act="closeBg"><div class="sheet" style="--c:${(TYPES[p.type]||TYPES.tips).c}" role="dialog" aria-modal="true" aria-label="ノートの詳細">
+    <div class="grip"></div>
+    <div class="sheet-head"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${tag(p.type)}${statusBadge(p)}${p.important?`<span class="badge must">要確認</span>`:""}${p.visibility==="private"?`<span class="badge lock">非公開（本人と店長のみ）</span>`:""}</div>
+      <button class="x" data-act="close" aria-label="閉じる">×</button></div>
+    <div class="d-title">${esc(p.title)}</div>
+    <div class="d-meta"><span>${esc(p.author)}</span><span>${ago(p.createdAt)}</span></div>
+    ${p.source ? `<div class="src">${esc((TYPES[p.type]||{}).src || "相手")}：${esc(p.source)}</div>` : ""}
+    <div class="d-body">${fmtBody(p.body)}</div>
+    <div class="readbox">
+      ${mine ? `<div class="read-done">✓ 確認しました（${ago(mine.readAt)}）</div>`
+             : `<button class="read-btn" data-act="read" data-id="${p.id}">読みました。確認しました</button>`}
+      ${privateIssue ? "" : `<div class="names">${staffNames.map(n => `<span class="nm ${rNames.includes(n)?"":"no"}">${rNames.includes(n)?"✓ ":""}${esc(n)}</span>`).join("")}</div>`}
+    </div>
+    ${statusCtl}
+    <div class="blk"><h4>コメント・質問 ${cs.length?`（${cs.length}）`:""}</h4>
+      ${cs.map(c => `<div class="cmt ${mgrNames.includes(c.author)?"mgr":""}"><div class="who">${esc(c.author)}${mgrNames.includes(c.author)?"（店長）":""}・${ago(c.createdAt)}</div>${fmtBody(c.body)}</div>`).join("") || `<div class="muted" style="font-size:13px">わからないことはここで質問できます</div>`}
+      <form class="cmt-form" id="cmtForm" data-id="${p.id}"><textarea id="cmtBody" rows="1" placeholder="コメントを書く"></textarea><button class="btn small" type="submit">送る</button></form>
+    </div>
+    ${canDel ? `<div class="actions">${S.confirmDel
+      ? `<span style="font-size:13px;align-self:center">本当に削除しますか？</span><button class="btn small danger" data-act="delYes" data-id="${p.id}">削除する</button><button class="btn small ghost" data-act="delNo">やめる</button>`
+      : `<button class="btn small ghost" data-act="del">このノートを削除</button>`}</div>` : ""}
+  </div></div>`;
+}
+function sheetCompose(){
+  const c = S.compose, t = TYPES[c.type];
+  const typeBtns = Object.entries(TYPES).map(([k,v]) =>
+    `<button type="button" class="type-btn" style="--c:${v.c}" data-act="pickType" data-t="${k}" aria-pressed="${c.type===k}"><b><i></i>${v.label}</b><span>${v.desc}</span></button>`).join("");
+  return `<div class="veil" data-act="closeBg"><div class="sheet" role="dialog" aria-modal="true" aria-label="ノートを書く">
+    <div class="grip"></div>
+    <div class="sheet-head"><h3>ノートを書く</h3><button class="x" data-act="close" aria-label="閉じる">×</button></div>
+    <form class="f" id="composeForm">
+      <div class="fld"><span class="lbl">何を書きますか？</span><div class="types">${typeBtns}</div></div>
+      ${c.type ? `
+      ${t.src ? `<div class="fld"><label for="cSource">${t.src}</label><input type="text" id="cSource" placeholder="${t.srcPh}" value="${esc(c.source)}"></div>` : ""}
+      <div class="fld"><label for="cTitle">タイトル <span class="hint">ひとことで（検索に使われます）</span></label>
+        <input type="text" id="cTitle" maxlength="80" required value="${esc(c.title)}" placeholder="${c.type==="issue" ? "例：○○を改善してほしい" : "例：入館エラーが出たときの対応"}"></div>
+      <div class="fld"><label for="cBody">内容</label>
+        <textarea id="cBody" required placeholder="${c.type==="phone"||c.type==="verbal" ? "聞いた内容と、どう対応したか／どう対応すればいいかを書いてください" : c.type==="issue" ? "困っていること、どうなってほしいかを書いてください" : "伝えたいことを書いてください"}">${esc(c.body)}</textarea></div>
+      ${c.type==="issue" ? `<div class="fld"><span class="lbl">公開範囲</span><div class="vis">
+          <label><input type="radio" name="vis" value="public" ${c.visibility!=="private"?"checked":""}>みんなに公開<small>スタッフ全員が見られます</small></label>
+          <label><input type="radio" name="vis" value="private" ${c.visibility==="private"?"checked":""}>非公開<small>あなたと店長だけ</small></label></div></div>`
+        : `<label class="opt"><input type="checkbox" id="cImportant" ${c.important?"checked":""}><span>全員に確認してほしい（要確認）<small>確認状況で、誰が読んだかを追いかけます</small></span></label>`}
+      <button class="btn wide" type="submit" ${S.busy?"disabled":""}>${S.busy ? "送っています…" : "投稿する"}</button>` : ""}
+    </form>
+  </div></div>`;
+}
+
+/* ---------- 描画 ---------- */
+function render(skipSheet){
+  if (!S.me) return;
+  document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-current", b.dataset.v===S.view ? "page" : "false"));
+  const v = $("#view");
+  v.innerHTML = S.view==="home" ? viewHome() : S.view==="board" ? viewBoard() : S.view==="issues" ? viewIssues() : viewCheck();
+  if (S.view==="board") renderBoardList();
+  renderDots(); if (!skipSheet) renderSheet();
+}
+function avatarColor(n){ const k = Object.keys(TYPES); let h = 0; for (const ch of n) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return TYPES[k[h % k.length]].c; }
+function renderDots(){
+  const m = mustList().length;
+  const d = $("#dotHome"); d.hidden = !m; d.textContent = m;
+  const iss = isMgr() ? S.posts.filter(p => p.type==="issue" && (p.status||"open")==="open").length : 0;
+  const di = $("#dotIssue"); di.hidden = !iss; di.textContent = iss;
+  $("#meChip").innerHTML = `<span class="avatar" style="--c:${avatarColor(S.me.name)}">${esc(S.me.name.slice(0,1))}</span>${esc(S.me.name)}${isMgr()?`<span class="role">店長</span>`:""}`;
+}
+function renderSheet(){
+  const el = $("#sheet");
+  const key = S.compose ? "compose" : S.open ? "open:" + S.open : S.account ? "account" : "";
+  el.classList.toggle("still", !!key && key === renderSheet.last); renderSheet.last = key;
+  if (S.compose) {
+    const keep = document.activeElement && document.activeElement.id;
+    el.innerHTML = sheetCompose();
+    if (keep && document.getElementById(keep)) document.getElementById(keep).focus();
+  } else if (S.open) {
+    el.innerHTML = sheetDetail(S.posts.find(p => p.id === S.open));
+  } else if (S.account) {
+    el.innerHTML = `<div class="veil" data-act="closeBg"><div class="sheet" role="dialog" aria-modal="true" aria-label="アカウント">
+      <div class="grip"></div><div class="sheet-head"><h3>${esc(S.me.name)}さん</h3><button class="x" data-act="close" aria-label="閉じる">×</button></div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn ghost wide" data-act="refresh">最新の状態に更新</button>
+        <button class="btn ghost wide" data-act="logout">ログアウト（別の人に交代）</button>
+        ${!CONFIG.API_URL ? `<button class="btn danger wide" data-act="resetDemo">お試しデータを最初に戻す</button>` : ""}
+      </div></div></div>`;
+  } else el.innerHTML = "";
+  document.body.style.overflow = el.innerHTML ? "hidden" : "";
+}
+
+/* ---------- データ読み込み ---------- */
+async function refresh(quiet){
+  try {
+    const d = await api("load");
+    S.posts = d.posts; S.reads = d.reads; S.comments = d.comments; S.staff = d.staff;
+    if (S.compose) renderDots(); else render(quiet && !!(S.open || S.account));
+  } catch(e) {
+    if (/PIN|名前/.test(e.message)) return logout();
+    if (!quiet) toast(e.message);
+  }
+}
+function syncCompose(){
+  if (!S.compose) return;
+  const g = id => document.getElementById(id);
+  if (g("cTitle")) S.compose.title = g("cTitle").value;
+  if (g("cBody")) S.compose.body = g("cBody").value;
+  if (g("cSource")) S.compose.source = g("cSource").value;
+  if (g("cImportant")) S.compose.important = g("cImportant").checked;
+  const v = document.querySelector('input[name="vis"]:checked'); if (v) S.compose.visibility = v.value;
+}
+
+/* ---------- 操作 ---------- */
+document.addEventListener("click", async e => {
+  const el = e.target.closest("[data-act]"); if (!el) return;
+  const a = el.dataset.act;
+  if (a === "closeBg" && e.target !== el) return;
+  switch(a){
+    case "nav": S.view = el.dataset.v; render(); window.scrollTo({top:0}); break;
+    case "open": S.open = el.dataset.id; S.compose = null; S.account = false; S.confirmDel = false; renderSheet(); break;
+    case "close": case "closeBg":
+      if (S.compose) syncCompose(), LS.set("hidamari-draft", S.compose);
+      S.open = null; S.compose = null; S.account = false; S.confirmDel = false; renderSheet(); break;
+    case "compose": {
+      const draft = LS.get("hidamari-draft", null);
+      S.compose = draft && (draft.title || draft.body) ? draft : {type:null, title:"", body:"", source:"", important:false, visibility:"public"};
+      if (el.dataset.t) { S.compose.type = el.dataset.t; S.compose.important = !!TYPES[el.dataset.t].must; }
+      S.open = null; renderSheet(); break;
+    }
+    case "pickType": syncCompose(); S.compose.type = el.dataset.t; S.compose.important = !!TYPES[el.dataset.t].must; renderSheet(); break;
+    case "read": {
+      el.disabled = true;
+      try { await api("read", {id:el.dataset.id}); S.reads.push({postId:el.dataset.id, name:S.me.name, readAt:new Date().toISOString()}); toast("確認しました。ありがとうございます"); render(); }
+      catch(err){ toast(err.message); el.disabled = false; }
+      break;
+    }
+    case "status": {
+      try { await api("status", {id:el.dataset.id, status:el.dataset.s}); const p = S.posts.find(x => x.id===el.dataset.id); p.status = el.dataset.s; toast("「" + STATUS[el.dataset.s] + "」にしました"); render(); }
+      catch(err){ toast(err.message); }
+      break;
+    }
+    case "del": S.confirmDel = true; renderSheet(); break;
+    case "delNo": S.confirmDel = false; renderSheet(); break;
+    case "delYes": {
+      try { await api("delete", {id:el.dataset.id}); S.posts = S.posts.filter(p => p.id !== el.dataset.id); S.open = null; S.confirmDel = false; toast("削除しました"); render(); }
+      catch(err){ toast(err.message); }
+      break;
+    }
+    case "type": S.type = el.dataset.t; document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.t===S.type)); renderBoardList(); break;
+    case "issueF": S.issueF = el.dataset.f; render(); break;
+    case "checkMode": S.checkMode = el.dataset.m; render(); break;
+    case "account": S.account = true; renderSheet(); break;
+    case "refresh": S.account = false; await refresh(); toast("更新しました"); break;
+    case "logout": logout(); break;
+    case "resetDemo": Demo.reset(); S.account = false; await refresh(); toast("お試しデータを戻しました"); break;
+  }
+});
+document.addEventListener("input", e => {
+  if (e.target.id === "q") { S.q = e.target.value; renderBoardList(); }
+  if (S.compose && /^c(Title|Body|Source)$/.test(e.target.id)) { syncCompose(); LS.set("hidamari-draft", S.compose); }
+});
+document.addEventListener("change", e => {
+  if (e.target.id === "unreadOnly") { S.unreadOnly = e.target.checked; renderBoardList(); }
+  if (S.compose) syncCompose();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && (S.open || S.compose || S.account)) { $("[data-act=close]")?.click(); } });
+document.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (e.target.id === "composeForm") {
+    syncCompose(); const c = S.compose;
+    if (!c.title.trim() || !c.body.trim()) return toast("タイトルと内容を入れてください");
+    S.busy = true; renderSheet();
+    try {
+      const p = await api("create", {post:{type:c.type, title:c.title.trim(), body:c.body.trim(), source:(c.source||"").trim(), important:c.type!=="issue" && c.important, visibility:c.visibility}});
+      S.posts.push(p); S.reads.push({postId:p.id, name:S.me.name, readAt:p.createdAt});
+      LS.del("hidamari-draft"); S.compose = null; S.busy = false;
+      S.view = p.type==="issue" ? "issues" : S.view; toast("投稿しました"); render();
+    } catch(err){ S.busy = false; renderSheet(); toast(err.message); }
+  }
+  if (e.target.id === "cmtForm") {
+    const body = $("#cmtBody").value.trim(); if (!body) return;
+    try { const c = await api("comment", {id:e.target.dataset.id, body}); S.comments.push(c); renderSheet(); toast("コメントしました"); }
+    catch(err){ toast(err.message); }
+  }
+  if (e.target.id === "loginForm") login();
+});
+
+/* ---------- ログイン ---------- */
+async function showLogin(){
+  $("#app").hidden = true; $("#login").hidden = false;
+  $("#loginStore").textContent = CONFIG.STORE + " スタッフ専用";
+  $("#demoHint").hidden = !!CONFIG.API_URL;
+  const sel = $("#loginName"); sel.innerHTML = `<option value="">読み込み中…</option>`;
+  try {
+    const st = await api("staff");
+    sel.innerHTML = `<option value="">選んでください</option>` + st.map(s => `<option>${esc(s.name)}</option>`).join("");
+    const last = LS.get("hidamari-lastname", ""); if (last) sel.value = last;
+  } catch(e) { sel.innerHTML = `<option value="">読み込めませんでした</option>`; $("#loginErr").textContent = "スタッフ名を読み込めません。設定のURLを確認してください。"; }
+}
+async function login(){
+  const name = $("#loginName").value, pin = $("#loginPin").value.trim();
+  if (!name || !pin) { $("#loginErr").textContent = "お名前とPINを入れてください"; return; }
+  $("#loginBtn").disabled = true; $("#loginErr").textContent = "";
+  S.auth = {name, pin};
+  try {
+    S.me = await api("login");
+    LS.set("hidamari-auth", S.auth); LS.set("hidamari-lastname", name);
+    $("#loginPin").value = ""; start();
+  } catch(e){ S.auth = null; $("#loginErr").textContent = e.message; }
+  $("#loginBtn").disabled = false;
+}
+function logout(){
+  LS.del("hidamari-auth"); S.auth = null; S.me = null; S.account = false; S.open = null; S.compose = null;
+  renderSheet(); showLogin();
+}
+async function start(){
+  $("#login").hidden = true; $("#app").hidden = false;
+  $("#storeName").textContent = CONFIG.STORE;
+  $("#demoBar").hidden = !!CONFIG.API_URL;
+  $("#view").innerHTML = `<div class="loading">読み込み中…</div>`;
+  renderDots(); await refresh();
+}
+(async function boot(){
+  if (S.auth) {
+    try { S.me = await api("login"); return start(); } catch(e) { LS.del("hidamari-auth"); S.auth = null; }
+  }
+  showLogin();
+})();
+setInterval(() => { if (S.me && document.visibilityState === "visible" && !S.compose) refresh(true); }, CONFIG.REFRESH_SEC * 1000);
+document.addEventListener("visibilitychange", () => { if (S.me && document.visibilityState === "visible" && !S.compose) refresh(true); });
+</script>
+
+</body>
+</html>
