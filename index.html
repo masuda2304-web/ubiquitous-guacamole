@@ -385,6 +385,24 @@ main,.top{position:relative;z-index:1}
 .errc img{width:72px;flex:none;animation:wiggle .8s ease-in-out}
 .btn .sending{width:30px;height:30px;object-fit:contain;margin:-8px 0;animation:lift .6s ease-in-out infinite}
 .cheer.gaan{width:140px;margin-left:-70px}
+.media-pick{display:flex;flex-wrap:wrap;gap:8px}
+.mthumb{position:relative;width:78px;height:78px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--surface-2);flex:none}
+.mthumb img,.mthumb video{width:100%;height:100%;object-fit:cover;display:block}
+.mthumb .vtag{position:absolute;left:4px;bottom:4px;font-size:10px;font-weight:700;background:rgba(0,0,0,.6);color:#fff;border-radius:6px;padding:1px 6px}
+.mthumb .rm{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:13px;line-height:22px;padding:0}
+.add-media{width:78px;height:78px;border-radius:12px;border:2px dashed color-mix(in srgb,var(--t-handover) 55%,var(--line));background:color-mix(in srgb,var(--t-handover) 8%,var(--surface));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:700;color:color-mix(in srgb,var(--t-handover) 75%,var(--ink));cursor:pointer}
+.add-media b{font-size:22px;line-height:1}
+.add-media input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.gallery.one{grid-template-columns:1fr}
+.gallery button{border:0;padding:0;border-radius:14px;overflow:hidden;background:var(--surface-2);aspect-ratio:4/3;max-width:100%}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block}
+.vbox{margin-top:12px;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:16/9;max-width:100%}
+.vbox iframe,.vbox video{width:100%;height:100%;border:0;display:block}
+.vlink{font-size:12px;margin-top:4px;display:inline-block}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(10,14,12,.9);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:fade .18s ease}
+.lightbox img{max-width:100%;max-height:100%;border-radius:10px;object-fit:contain}
+.lightbox .x{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));background:rgba(255,255,255,.18);color:#fff}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -498,6 +516,46 @@ function cheer(kind){
   document.body.appendChild(img); setTimeout(() => img.remove(), 2000);
 }
 const emptyC = (kind, msg, wide) => `<div class="empty"><div class="empty-c ${wide?"wide":""}"><img src="${CHARA[kind]}" alt=""><span>${msg}</span></div></div>`;
+/* ---------- 写真・動画 ---------- */
+const MEDIA = {maxPhotos:4, maxVideos:1, maxVideoMB:25};
+const mediaSrc = (f, big) => f.src || `https://drive.google.com/thumbnail?id=${encodeURIComponent(f.id)}&sz=w${big ? 2400 : 1200}`;
+async function mediaFallback(img){
+  if (img.dataset.fb) return; img.dataset.fb = "1";
+  try { img.src = await api("media", {id: img.dataset.fid}); } catch(e) { img.alt = "写真を表示できませんでした"; }
+}
+function fileToDataURL(file){ return new Promise((ok, ng) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = ng; r.readAsDataURL(file); }); }
+async function compressImage(file){
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((ok, ng) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ng; i.src = url; });
+    const max = 1600, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement("canvas"); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    return c.toDataURL("image/jpeg", 0.82);
+  } finally { URL.revokeObjectURL(url); }
+}
+async function addFiles(list){
+  const c = S.compose; c.files = c.files || [];
+  for (const f of list) {
+    const imgs = c.files.filter(x => x.kind === "image").length, vids = c.files.filter(x => x.kind === "video").length;
+    if (/^image\//.test(f.type)) {
+      if (imgs >= MEDIA.maxPhotos) { toast(`写真は${MEDIA.maxPhotos}枚までです`); continue; }
+      try { const d = await compressImage(f); c.files.push({kind:"image", mime:"image/jpeg", name:f.name.replace(/\.\w+$/, "") + ".jpg", preview:d, data:d.split(",")[1]}); }
+      catch(e) { oops("この写真は読み込めませんでした（JPEGかPNGでお試しください）"); }
+    } else if (/^video\//.test(f.type)) {
+      if (vids >= MEDIA.maxVideos) { toast(`動画は${MEDIA.maxVideos}本までです`); continue; }
+      if (f.size > MEDIA.maxVideoMB * 1024 * 1024) { oops(`動画は${MEDIA.maxVideoMB}MBまでです（30秒〜1分くらい）`); continue; }
+      const d = await fileToDataURL(f);
+      c.files.push({kind:"video", mime:f.type, name:f.name, preview:URL.createObjectURL(f), data:d.split(",")[1]});
+    } else toast("写真か動画を選んでください");
+  }
+  renderSheet();
+}
+function zoom(src){
+  const el = document.createElement("div"); el.className = "lightbox"; el.innerHTML = `<img src="${esc(src)}" alt=""><button class="x" aria-label="閉じる">×</button>`;
+  el.addEventListener("click", () => el.remove()); document.body.appendChild(el);
+}
+const draftOf = c => ({...c, files: []});
 function oops(msg){ toast(msg); cheer("gaan"); }
 function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(()=> t.hidden = true, 2200); }
 
@@ -562,12 +620,19 @@ const Demo = (() => {
                staff:db.staff.map(({name,role,title}) => ({name,role,title}))};
         break;
       }
+      case "upload": {
+        const me = auth(q.auth), f = q.file; if (!me) throw new Error("x");
+        const kind = /^video\//.test(f.mime) ? "video" : "image";
+        out = {id:uid(), kind, name:f.name, src: kind === "image" ? "data:" + f.mime + ";base64," + f.data : (f.blobUrl || "")};
+        return out;
+      }
       case "create": {
         const me = auth(q.auth), p = q.post;
         if (!p.title || !p.body) throw new Error("タイトルと内容を入れてください");
         const np = {id:uid(), createdAt:new Date().toISOString(), author:me.name, type:p.type, title:p.title, body:p.body,
           source:p.source||"", important:!!p.important, visibility:p.type==="issue" ? (p.visibility||"public") : "public",
-          status:p.type==="issue" ? "open" : "", deleted:false};
+          status:p.type==="issue" ? "open" : "", deleted:false, files:(p.files||[]).slice(0,5)};
+        if (np.files.length && np.visibility==="private") throw new Error("非公開の相談には写真・動画を付けられません");
         db.posts.push(np); db.reads.push({postId:np.id, name:me.name, readAt:np.createdAt}); save(); out = np; break;
       }
       case "read": {
@@ -638,7 +703,7 @@ function itemHTML(p){
     <div class="body">${tag(p.type)}
       <div class="title">${esc(p.title)}</div>
       <div class="snip">${esc(p.body)}</div>
-      <div class="meta"><span>${esc(p.author)}</span><span>${ago(p.createdAt)}</span>${p.source?`<span>${esc(p.source)}</span>`:""}${cc?`<span>コメント ${cc}</span>`:""}</div>
+      <div class="meta"><span>${esc(p.author)}</span><span>${ago(p.createdAt)}</span>${p.source?`<span>${esc(p.source)}</span>`:""}${cc?`<span>コメント ${cc}</span>`:""}${(p.files||[]).some(f=>f.kind==="image")?`<span>写真 ${(p.files||[]).filter(f=>f.kind==="image").length}</span>`:""}${(p.files||[]).some(f=>f.kind==="video")?`<span>動画 1</span>`:""}</div>
     </div>
     <div class="side">${side}</div>
   </button>`;
@@ -819,6 +884,7 @@ function sheetDetail(p){
     <div class="d-meta"><span>${esc(p.author)}</span><span>${ago(p.createdAt)}</span></div>
     ${p.source ? `<div class="src">${esc((TYPES[p.type]||{}).src || "相手")}：${esc(p.source)}</div>` : ""}
     <div class="d-body">${fmtBody(p.body)}</div>
+    ${galleryHTML(p)}
     <div class="readbox">
       ${mine ? `<div class="read-done">✓ 確認しました（${ago(mine.readAt)}）</div>`
              : `<button class="read-btn" data-act="read" data-id="${p.id}">読みました。確認しました</button>`}
@@ -833,6 +899,26 @@ function sheetDetail(p){
       ? `<span style="font-size:13px;align-self:center">本当に削除しますか？</span><button class="btn small danger" data-act="delYes" data-id="${p.id}">削除する</button><button class="btn small ghost" data-act="delNo">やめる</button>`
       : `<button class="btn small ghost" data-act="del">このノートを削除</button>`}</div>` : ""}
   </div></div>`;
+}
+function mediaPickHTML(c){
+  if (c.type === "issue" && c.visibility === "private") return `<div class="fld"><span class="lbl">写真・動画</span><span class="muted" style="font-size:12px">非公開の相談には写真・動画を付けられません</span></div>`;
+  const fs = c.files || [];
+  const full = fs.filter(x => x.kind==="image").length >= MEDIA.maxPhotos && fs.filter(x => x.kind==="video").length >= MEDIA.maxVideos;
+  return `<div class="fld"><span class="lbl">写真・動画 <span class="hint">写真${MEDIA.maxPhotos}枚・動画${MEDIA.maxVideos}本（1分くらい）まで。会員様の顔や個人情報が写らないように</span></span>
+    <div class="media-pick">
+      ${fs.map((f,i) => `<div class="mthumb">${f.kind==="image" ? `<img src="${f.preview}" alt="">` : `<video src="${f.preview}" muted playsinline></video><span class="vtag">動画</span>`}<button type="button" class="rm" data-act="rmFile" data-i="${i}" aria-label="外す">×</button></div>`).join("")}
+      ${full ? "" : `<label class="add-media"><input type="file" id="cFiles" accept="image/*,video/*" multiple><b>＋</b>追加</label>`}
+    </div></div>`;
+}
+function galleryHTML(p){
+  const fs = p.files || []; if (!fs.length) return "";
+  const imgs = fs.filter(f => f.kind === "image"), vids = fs.filter(f => f.kind === "video");
+  return (imgs.length ? `<div class="gallery ${imgs.length===1?"one":""}">${imgs.map(f =>
+      `<button type="button" data-act="zoom" data-fid="${esc(f.id)}"><img src="${esc(mediaSrc(f))}" data-fid="${esc(f.id)}" alt="添付写真" loading="lazy" onerror="mediaFallback(this)"></button>`).join("")}</div>` : "")
+    + vids.map(f => f.src
+      ? `<div class="vbox"><video src="${esc(f.src)}" controls playsinline></video></div>`
+      : `<div class="vbox"><iframe src="https://drive.google.com/file/d/${encodeURIComponent(f.id)}/preview" allow="autoplay; fullscreen" allowfullscreen loading="lazy" title="添付動画"></iframe></div>
+         <a class="vlink" href="https://drive.google.com/file/d/${encodeURIComponent(f.id)}/view" target="_blank" rel="noopener">再生できないときはこちら（投稿直後は準備に数分かかることがあります）</a>`).join("");
 }
 function sheetCompose(){
   const c = S.compose, t = TYPES[c.type];
@@ -853,7 +939,8 @@ function sheetCompose(){
           <label><input type="radio" name="vis" value="public" ${c.visibility!=="private"?"checked":""}>みんなに公開<small>スタッフ全員が見られます</small></label>
           <label><input type="radio" name="vis" value="private" ${c.visibility==="private"?"checked":""}>非公開<small>あなたと店長・副社長だけ</small></label></div></div>`
         : `<label class="opt"><input type="checkbox" id="cImportant" ${c.important?"checked":""}><span>全員に確認してほしい（要確認）<small>確認状況で、誰が読んだかを追いかけます</small></span></label>`}
-      <button class="btn wide" type="submit" ${S.busy?"disabled":""}>${S.busy ? `<img class="sending" src="${CHARA.rush}" alt="">送っています…` : "投稿する"}</button>` : ""}
+      ${mediaPickHTML(c)}
+      <button class="btn wide" type="submit" ${S.busy?"disabled":""}>${S.busy ? `<img class="sending" src="${CHARA.rush}" alt="">${esc(S.busyMsg || "送っています…")}` : "投稿する"}</button>` : ""}
     </form>
   </div></div>`;
 }
@@ -930,7 +1017,7 @@ document.addEventListener("click", async e => {
     case "nav": S.view = el.dataset.v; S.intro = true; render(); window.scrollTo({top:0}); break;
     case "open": S.open = el.dataset.id; S.compose = null; S.account = false; S.confirmDel = false; renderSheet(); break;
     case "close": case "closeBg":
-      if (S.compose) syncCompose(), LS.set("hidamari-draft", S.compose);
+      if (S.compose) syncCompose(), LS.set("hidamari-draft", draftOf(S.compose));
       S.open = null; S.compose = null; S.account = false; S.confirmDel = false; renderSheet(); break;
     case "compose": {
       const draft = LS.get("hidamari-draft", null);
@@ -938,6 +1025,8 @@ document.addEventListener("click", async e => {
       if (el.dataset.t) { S.compose.type = el.dataset.t; S.compose.important = !!TYPES[el.dataset.t].must; }
       S.open = null; renderSheet(); break;
     }
+    case "rmFile": syncCompose(); S.compose.files.splice(+el.dataset.i, 1); renderSheet(); break;
+    case "zoom": { const im = el.querySelector("img"); if (im) zoom(im.dataset.fb ? im.src : mediaSrc({id:el.dataset.fid, src:im.src.startsWith("data:") ? im.src : ""}, true)); break; }
     case "pickType": syncCompose(); S.compose.type = el.dataset.t; S.compose.important = !!TYPES[el.dataset.t].must; renderSheet(); break;
     case "read": {
       el.disabled = true;
@@ -973,11 +1062,12 @@ document.addEventListener("click", async e => {
 });
 document.addEventListener("input", e => {
   if (e.target.id === "q") { S.q = e.target.value; renderBoardList(); }
-  if (S.compose && /^c(Title|Body|Source)$/.test(e.target.id)) { syncCompose(); LS.set("hidamari-draft", S.compose); }
+  if (S.compose && /^c(Title|Body|Source)$/.test(e.target.id)) { syncCompose(); LS.set("hidamari-draft", draftOf(S.compose)); }
 });
 document.addEventListener("change", e => {
   if (e.target.id === "unreadOnly") { S.unreadOnly = e.target.checked; renderBoardList(); }
-  if (S.compose) syncCompose();
+  if (e.target.id === "cFiles") { syncCompose(); const fl = [...e.target.files]; e.target.value = ""; addFiles(fl); return; }
+  if (S.compose) { const before = S.compose.visibility; syncCompose(); if (e.target.name === "vis" && before !== S.compose.visibility) renderSheet(); }
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && (S.open || S.compose || S.account)) { $("[data-act=close]")?.click(); } });
 document.addEventListener("submit", async e => {
@@ -985,9 +1075,17 @@ document.addEventListener("submit", async e => {
   if (e.target.id === "composeForm") {
     syncCompose(); const c = S.compose;
     if (!c.title.trim() || !c.body.trim()) return toast("タイトルと内容を入れてください");
-    S.busy = true; renderSheet();
+    const files = c.files || [];
+    if (files.length && c.type==="issue" && c.visibility==="private") return toast("非公開の相談には写真・動画を付けられません");
+    S.busy = true; S.busyMsg = ""; renderSheet();
     try {
-      const p = await api("create", {post:{type:c.type, title:c.title.trim(), body:c.body.trim(), source:(c.source||"").trim(), important:c.type!=="issue" && c.important, visibility:c.visibility}});
+      const up = [];
+      for (let i = 0; i < files.length; i++) {
+        S.busyMsg = `写真・動画を送っています ${i+1}/${files.length}`; renderSheet();
+        up.push(await api("upload", {file:{name:files[i].name, mime:files[i].mime, data:files[i].data, blobUrl:files[i].kind==="video" ? files[i].preview : ""}}));
+      }
+      S.busyMsg = "投稿しています…"; renderSheet();
+      const p = await api("create", {post:{type:c.type, title:c.title.trim(), body:c.body.trim(), source:(c.source||"").trim(), important:c.type!=="issue" && c.important, visibility:c.visibility, files:up}});
       S.posts.push(p); S.reads.push({postId:p.id, name:S.me.name, readAt:p.createdAt});
       LS.del("hidamari-draft"); S.compose = null; S.busy = false;
       S.view = p.type==="issue" ? "issues" : S.view; toast("投稿しました"); cheer("rush"); render();
